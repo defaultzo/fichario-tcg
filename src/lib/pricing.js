@@ -87,7 +87,6 @@ export function itemValue(item, card, rates) {
   return ref * mult * (item.qty || 1);
 }
 
-/** Tabelas do guia de preços, no formato menor / médio / maior. */
 export function priceGuide(pricing, rates) {
   if (!pricing) return { tcg: [], cm: [] };
   const unit = pricing.tcgplayer?.unit || 'USD';

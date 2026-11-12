@@ -133,3 +133,9 @@ export const POPULAR_SEARCHES = [
   'Gardevoir',
   'Greninja',
 ];
+
+/**
+ * Versão da política de privacidade. Ao mudar o texto de forma relevante, atualize a data:
+ * o aviso de privacidade volta a aparecer e o consentimento é pedido de novo.
+ */
+export const POLICY_VERSION = '2026-11-12';

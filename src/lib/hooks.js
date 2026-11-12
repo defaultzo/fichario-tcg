@@ -88,7 +88,6 @@ export function useWishedSet() {
   return useMemo(() => new Set(wishlist.map((w) => w.cardId)), [wishlist]);
 }
 
-/** Estatísticas derivadas da coleção, usadas no Início e no Fichário. */
 export function useCollectionStats() {
   const collection = useStore((s) => s.collection);
   const cards = useStore((s) => s.cards);

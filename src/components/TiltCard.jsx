@@ -5,7 +5,6 @@ import { useMediaQuery } from '../lib/hooks.js';
 
 const SPRING = { stiffness: 260, damping: 26, mass: 0.6 };
 
-/** Carta grande com inclinação e brilho seguindo o ponteiro (só mouse; respeita reduced motion). */
 export function TiltCard({ src, alt, holo }) {
   const ref = useRef(null);
   const reduce = useReducedMotion();

@@ -22,6 +22,13 @@ npm run build    # gera dist/, um site estático (HashRouter, funciona em qualqu
 
 Os dados ficam no `localStorage` do navegador. Use o backup para mudar de aparelho.
 
+## Privacidade (LGPD)
+
+- Sem servidor, contas, cookies de rastreamento ou analytics: tudo fica no aparelho.
+- Aviso de privacidade na primeira visita, com "Só o essencial" e "Permitir" com o mesmo peso. A cotação automática (open.er-api.com) só roda com consentimento, registrado com data e versão da política.
+- Página `/privacidade`: política, inventário dos dados guardados, exportação (portabilidade), revogação do consentimento e exclusão total (fichário, ajustes, consentimento e cache).
+- Antes de publicar, preencha o contato em `PRIVACY_CONTACT` (`src/lib/privacy.js`). Ao mudar a política, atualize `POLICY_VERSION` (`src/lib/constants.js`) para pedir o consentimento de novo.
+
 ## Stack
 
 React 18 · Vite · React Router · Motion · Zustand · Sonner · lucide-react

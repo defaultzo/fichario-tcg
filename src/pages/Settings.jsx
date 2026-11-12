@@ -1,10 +1,12 @@
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
-import { Download, RefreshCw, Trash2, Upload } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ChevronRight, Download, RefreshCw, ShieldCheck, Trash2, Upload } from 'lucide-react';
 import { fetchRates } from '../lib/api.js';
 import { CONDITIONS } from '../lib/constants.js';
 import { formatBRL, parseMoney } from '../lib/pricing.js';
 import { useStore } from '../lib/store.js';
+import { consentIsCurrent, exportBackup, wipeAllData } from '../lib/privacy.js';
 import { ConditionBadge, PageHeader, Segmented, Switch } from '../components/ui.jsx';
 import { refreshAllPrices } from './Collection.jsx';
 
@@ -42,7 +44,8 @@ export default function Settings() {
     c: useStore((s) => s.collection.length),
     w: useStore((s) => s.wishlist.length),
   };
-  const { setSettings, importData, reset } = useStore.getState();
+  const consent = useStore((s) => s.consent);
+  const { setSettings, setConsent, importData } = useStore.getState();
   const fileRef = useRef(null);
   const [loadingRates, setLoadingRates] = useState(false);
 
@@ -60,15 +63,7 @@ export default function Settings() {
   };
 
   const exportData = () => {
-    const { collection, wishlist, cards, settings: st } = useStore.getState();
-    const blob = new Blob([JSON.stringify({ app: 'fichario-tcg', version: 1, exportedAt: new Date().toISOString(), collection, wishlist, cards, settings: st }, null, 2)], {
-      type: 'application/json',
-    });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `fichario-tcg-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    exportBackup();
     toast.success('Backup baixado');
   };
 
@@ -88,8 +83,8 @@ export default function Settings() {
   };
 
   const wipe = () => {
-    if (!confirm('Apagar todo o fichário, desejos e ajustes deste aparelho? Isso não pode ser desfeito.')) return;
-    reset();
+    if (!confirm('Apagar todo o fichário, desejos, ajustes, consentimento e cache deste aparelho? Isso não pode ser desfeito.')) return;
+    wipeAllData();
     toast('Dados apagados');
   };
 
@@ -137,8 +132,8 @@ export default function Settings() {
         <div className="group">
           <div className="row">
             <Switch
-              checked={settings.autoRates}
-              onChange={(v) => setSettings({ autoRates: v })}
+              checked={settings.autoRates && consentIsCurrent(consent)}
+              onChange={(v) => setConsent(v)}
               label="Atualizar automaticamente"
             />
           </div>
@@ -202,9 +197,21 @@ export default function Settings() {
         </p>
       </section>
 
+      <section className="section">
+        <h2 className="section-title">Privacidade</h2>
+        <div className="group">
+          <Link to="/privacidade" className="row row-link">
+            <ShieldCheck size={17} />
+            <span className="row-title">Privacidade e seus dados</span>
+            <ChevronRight size={17} className="muted" />
+          </Link>
+        </div>
+      </section>
+
       <p className="credits">
         Dados das cartas: TCGdex. Preços de referência: TCGplayer e Cardmarket. Pokémon e suas marcas pertencem a
-        Nintendo, Creatures e GAME FREAK. Projeto independente, sem afiliação.
+        Nintendo, Creatures e GAME FREAK. Projeto independente, sem afiliação.{' '}
+        <Link to="/privacidade">Política de privacidade</Link>.
       </p>
     </div>
   );

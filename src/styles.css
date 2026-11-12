@@ -276,7 +276,6 @@ a,
   margin-top: auto;
 }
 
-/* Tab bar: material translúcido flutuando sobre o conteúdo */
 .tabbar {
   position: fixed;
   left: 0;
@@ -2111,6 +2110,97 @@ a,
 .toast {
   font-family: var(--font) !important;
   border-radius: 16px !important;
+}
+
+/* ───────────── Privacidade ───────────── */
+/* Aviso de consentimento: flutua acima da tab bar, abaixo das fichas (z 50). */
+.consent {
+  position: fixed;
+  z-index: 40;
+  left: calc(var(--gutter) + var(--safe-l));
+  right: calc(var(--gutter) + var(--safe-r));
+  bottom: calc(var(--tabbar-h) + var(--safe-b) + 12px);
+  display: grid;
+  gap: 10px;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 16px;
+  border-radius: var(--radius-xl);
+  background: var(--bg-elev);
+  box-shadow: var(--shadow-modal);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--text-2);
+}
+.consent-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent-text);
+}
+.consent-head h2 {
+  color: var(--text);
+  font: 700 1.02rem/1.2 var(--font-display);
+}
+.consent-link {
+  color: var(--accent-text);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.consent-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2px;
+}
+@media (min-width: 900px) {
+  .consent {
+    left: calc(var(--sidebar-w) + 40px);
+    right: 40px;
+    bottom: 24px;
+  }
+}
+
+.row-kv .row-title {
+  flex: 1;
+}
+.row-value-wrap {
+  flex-shrink: 1;
+  text-align: right;
+  font-weight: 500;
+}
+.icon-link {
+  flex-shrink: 0;
+  padding: 4px;
+  color: var(--accent-text);
+}
+.prose {
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+.prose h3 {
+  margin: 18px 0 6px;
+  font: 650 1rem/1.3 var(--font-display);
+}
+.prose h3:first-child {
+  margin-top: 0;
+}
+.prose p + p {
+  margin-top: 8px;
+}
+.prose ul {
+  margin: 0;
+  padding-left: 20px;
+}
+.prose li + li {
+  margin-top: 6px;
+}
+.prose a,
+.credits a {
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 /* ───────────── Acessibilidade ───────────── */

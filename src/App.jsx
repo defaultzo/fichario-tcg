@@ -8,6 +8,8 @@ import { fetchRates } from './lib/api.js';
 import { useCardSheet, useMediaQuery } from './lib/hooks.js';
 import { Sheet } from './components/Sheet.jsx';
 import { CardDetail } from './components/CardDetail.jsx';
+import { ConsentBanner } from './components/ConsentBanner.jsx';
+import { consentIsCurrent } from './lib/privacy.js';
 import Home from './pages/Home.jsx';
 import Search from './pages/Search.jsx';
 import Sets from './pages/Sets.jsx';
@@ -15,6 +17,7 @@ import SetDetail from './pages/SetDetail.jsx';
 import Collection from './pages/Collection.jsx';
 import Lists from './pages/Lists.jsx';
 import Settings from './pages/Settings.jsx';
+import Privacy from './pages/Privacy.jsx';
 
 const NAV = [
   { to: '/', label: 'Início', icon: HomeIcon, end: true },
@@ -39,15 +42,17 @@ function useTheme() {
   return theme === 'auto' ? (prefersDark ? 'dark' : 'light') : theme;
 }
 
+// A cotação automática chama um serviço de terceiro: só roda com consentimento válido.
 function useAutoRates() {
+  const allowed = useStore((s) => s.settings.autoRates && consentIsCurrent(s.consent) && s.consent.externalRates);
   useEffect(() => {
+    if (!allowed) return;
     const { settings, setSettings } = useStore.getState();
-    if (!settings.autoRates) return;
     if (settings.ratesUpdated && Date.now() - settings.ratesUpdated < 12 * 3600e3) return;
     fetchRates()
       .then((r) => setSettings({ ...r, ratesUpdated: Date.now() }))
       .catch(() => {});
-  }, []);
+  }, [allowed]);
 }
 
 function Sidebar() {
@@ -118,11 +123,13 @@ export default function App() {
             <Route path="/fichario" element={<Collection />} />
             <Route path="/listas" element={<Lists />} />
             <Route path="/ajustes" element={<Settings />} />
+            <Route path="/privacidade" element={<Privacy />} />
             <Route path="*" element={<Home />} />
           </Routes>
         </main>
         <TabBar />
         <CardSheetHost />
+        <ConsentBanner />
         <Toaster
           position="top-center"
           theme={theme}

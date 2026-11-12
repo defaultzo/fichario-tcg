@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { POLICY_VERSION } from './constants.js';
 
 export function uid() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
@@ -30,7 +31,8 @@ const DEFAULT_SETTINGS = {
   theme: 'auto',
   usd: 5.4,
   eur: 5.9,
-  autoRates: true,
+  // Privacidade por padrão (LGPD art. 46, §2º): nada de chamadas externas opcionais sem consentimento.
+  autoRates: false,
   ratesUpdated: null,
 };
 
@@ -41,6 +43,8 @@ export const useStore = create(
       wishlist: [],
       cards: {},
       settings: DEFAULT_SETTINGS,
+      /** Registro do consentimento (art. 8º, §2º): versão da política, data e escolha. */
+      consent: null,
 
       upsertCard: (snap) => set((s) => ({ cards: { ...s.cards, [snap.id]: snap } })),
       upsertCards: (snaps) =>
@@ -79,15 +83,25 @@ export const useStore = create(
       restoreWish: (wish) => set((s) => ({ wishlist: [wish, ...s.wishlist] })),
 
       setSettings: (patch) => set((s) => ({ settings: { ...s.settings, ...patch } })),
+      setConsent: (externalRates) =>
+        set((s) => ({
+          consent: { version: POLICY_VERSION, decidedAt: Date.now(), externalRates },
+          settings: { ...s.settings, autoRates: externalRates },
+        })),
 
+      // O consentimento é deste aparelho: um backup não liga a cotação automática sozinho.
       importData: (data) =>
-        set({
+        set((s) => ({
           collection: Array.isArray(data.collection) ? data.collection : [],
           wishlist: Array.isArray(data.wishlist) ? data.wishlist : [],
           cards: data.cards && typeof data.cards === 'object' ? data.cards : {},
-          settings: { ...DEFAULT_SETTINGS, ...(data.settings || {}) },
-        }),
-      reset: () => set({ collection: [], wishlist: [], cards: {}, settings: DEFAULT_SETTINGS }),
+          settings: {
+            ...DEFAULT_SETTINGS,
+            ...(data.settings || {}),
+            autoRates: s.consent?.externalRates === true && !!data.settings?.autoRates,
+          },
+        })),
+      reset: () => set({ collection: [], wishlist: [], cards: {}, settings: DEFAULT_SETTINGS, consent: null }),
     }),
     {
       name: 'fichario-tcg-v1',

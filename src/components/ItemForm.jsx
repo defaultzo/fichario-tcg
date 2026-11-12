@@ -67,7 +67,6 @@ function LanguagePicker({ value, onChange, allowAny }) {
   );
 }
 
-/** Formulário de uma cópia da carta no fichário (adicionar ou editar). */
 export function ItemForm({ card, initial, apiLang, onSave, onCancel }) {
   const rates = useRates();
   const finishes = availableFinishes(card);
@@ -181,7 +180,6 @@ export function ItemForm({ card, initial, apiLang, onSave, onCancel }) {
   );
 }
 
-/** Formulário da lista de desejos. */
 export function WishForm({ initial, onSave, onCancel }) {
   const [minCondition, setMinCondition] = useState(initial?.minCondition ?? 'SP');
   const [language, setLanguage] = useState(initial?.language ?? 'ANY');

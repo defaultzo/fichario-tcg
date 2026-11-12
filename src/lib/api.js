@@ -28,6 +28,39 @@ function writeCache(key, data) {
   }
 }
 
+function cacheKeys() {
+  const keys = [];
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k?.startsWith('tcgdex:')) keys.push(k);
+    }
+  } catch {
+    /* armazenamento indisponível */
+  }
+  return keys;
+}
+
+export function apiCacheStats() {
+  let bytes = 0;
+  const keys = cacheKeys();
+  try {
+    for (const k of keys) bytes += (k.length + (localStorage.getItem(k) || '').length) * 2;
+  } catch {
+    /* armazenamento indisponível */
+  }
+  return { entries: keys.length, bytes };
+}
+
+export function clearApiCache() {
+  mem.clear();
+  try {
+    for (const k of cacheKeys()) localStorage.removeItem(k);
+  } catch {
+    /* armazenamento indisponível */
+  }
+}
+
 async function get(path, { ttl = 0, force = false } = {}) {
   const lang = apiLang();
   const key = `${lang}${path}`;

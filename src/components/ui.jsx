@@ -36,7 +36,6 @@ export function LangBadge({ id }) {
   );
 }
 
-/** Controle segmentado; a pílula desliza entre opções (indica o estado escolhido). */
 export function Segmented({ options, value, onChange, size, ariaLabel }) {
   const id = useId();
   return (
