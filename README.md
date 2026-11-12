@@ -22,6 +22,10 @@ npm run build    # gera dist/, um site estático (HashRouter, funciona em qualqu
 
 Os dados ficam no `localStorage` do navegador. Use o backup para mudar de aparelho.
 
+## Publicar no GitHub Pages
+
+O workflow `.github/workflows/deploy.yml` publica a cada push na `main`. Ative uma vez em **Settings → Pages → Source: GitHub Actions**. O site fica em `https://defaultzo.github.io/fichario-tcg/`.
+
 ## Privacidade (LGPD)
 
 - Sem servidor, contas, cookies de rastreamento ou analytics: tudo fica no aparelho.

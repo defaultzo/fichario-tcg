@@ -132,6 +132,7 @@ export default function Privacy() {
               Para buscar cartas, o seu navegador fala direto com a TCGdex. A cotação automática usa o ExchangeRate-API
               e só roda com a sua permissão.
             </li>
+            <li>O site é hospedado no GitHub Pages, que registra os acessos (IP e página) por segurança.</li>
             <li>Você pode ver, baixar e apagar tudo nesta página, a qualquer momento.</li>
           </ul>
         </div>
@@ -162,8 +163,7 @@ export default function Privacy() {
         </div>
         <p className="field-hint">
           Esses serviços tratam seu IP como controladores independentes, conforme as políticas deles, e podem estar fora do
-          Brasil (transferência internacional, art. 33). A empresa que hospeda este site também pode registrar acessos (IP,
-          data e página) por segurança.
+          Brasil (transferência internacional, art. 33).
         </p>
       </section>
 

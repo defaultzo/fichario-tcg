@@ -15,6 +15,16 @@ export const PRIVACY_CONTACT = {
 
 export const THIRD_PARTIES = [
   {
+    id: 'github',
+    name: 'GitHub Pages',
+    url: 'https://docs.github.com/pt/site-policy/privacy-policies/github-general-privacy-statement',
+    hosts: 'defaultzo.github.io',
+    purpose: 'Hospedagem do site (entrega das páginas e arquivos do app).',
+    data: 'Endereço IP, navegador (user-agent) e a página acessada, registrados por segurança.',
+    basis: 'Legítimo interesse em manter o site seguro e no ar (art. 7º, IX)',
+    essential: true,
+  },
+  {
     id: 'tcgdex',
     name: 'TCGdex',
     url: 'https://tcgdex.dev',
